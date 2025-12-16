@@ -203,9 +203,44 @@ class Program
 
         Console.WriteLine("Araç listeye başarıyla eklendi :)");
     }
-    
-    static void RezervasyonEkle(string musteri, string plaka, DateTime baslangic, DateTime bitis)
+
+    /*kiralama tarihleri arasındaki gün sayısını alır ve 
+    aracın günlük fiyatı ile çarparak toplam ücreti hesaplar*/
+    static double RezervasyonUcreti(string plaka, DateTime baslangic, DateTime bitis)
     {
-        // Şimdilik boş bırakıldı
+        int index = plakaList.IndexOf(plaka);
+        double fiyat = gunlukFiyatList[index];
+        int gun = (bitis - baslangic).Days + 1; // iki tarih arasındaki farkı vererek gün sayısına çevirir
+        return fiyat * gun; 
+    }
+    
+    static void RezervasyonEkle()
+    {
+        Console.Write("Müşteri adı: ");
+        string musteri = Console.ReadLine();
+        
+        Console.Write("Plaka: ");
+        string plaka = Console.ReadLine();
+        
+        Console.Write("Başlangıç Tarihi (yyyy-aa-gg): ");
+        DateTime baslangic = DateTime.Parse(Console.ReadLine());
+        
+        Console.Write("Bitiş Tarihi (yyyy-aa-gg): ");
+        DateTime bitis = DateTime.Parse(Console.ReadLine());
+
+        if (!AracMusaitMi(plaka, baslangic, bitis))
+        {
+            Console.WriteLine("Araç müsait değil!!");
+            return;
+        }
+        
+        rezervasyonPlaka.Add(plaka);
+        musteriAd.Add(musteri);
+        baslangicTarih.Add(baslangic);
+        bitisTarih.Add(bitis);
+        double ucret = RezervasyonUcreti(plaka, baslangic, bitis);
+        ucretListe.Add(ucret);
+
+        Console.WriteLine("Rezervasyon yapıldı!!");
     }
 }
