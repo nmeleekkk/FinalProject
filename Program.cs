@@ -243,4 +243,26 @@ class Program
 
         Console.WriteLine("Rezervasyon yapıldı!!");
     }
+
+    static void RezervasyonIptal()
+    {
+        Console.Write("Plaka: ");
+        string plaka = Console.ReadLine();
+        
+        int index = rezervasyonPlaka.IndexOf(plaka);
+
+        if (index == -1)
+        {
+            Console.WriteLine("Rezervasyon bulunamadı!!!");
+            return;
+        }
+        
+        rezervasyonPlaka.RemoveAt(index);
+        musteriAd.RemoveAt(index);
+        baslangicTarih.RemoveAt(index);
+        bitisTarih.RemoveAt(index);
+        ucretListe.RemoveAt(index);
+
+        Console.WriteLine("Rezervasyon İptal Edilmiştir!!!");
+    }
 }
