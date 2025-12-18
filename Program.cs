@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Globalization;
 using System.Net;
 
 class Program
@@ -265,4 +266,60 @@ class Program
 
         Console.WriteLine("Rezervasyon İptal Edilmiştir!!!");
     }
+
+    //Girilen ada göre o müşteriye ait tüm rezervasyonları ekrana yazdırır
+    static void MusteriRezervasyonlari()
+    {
+        Console.Write("Müşteri Adı: ");
+        string musteri = Console.ReadLine();
+
+        for (int i = 0; i < musteriAd.Count; i++)
+        {
+            if (musteriAd[i] == musteri)
+            {
+                Console.WriteLine($"{musteri} - {rezervasyonPlaka[i]} - {baslangicTarih[i]} → {bitisTarih[i]}");
+            }
+        }
+    }
+
+    static void EnCokKiralananArac()
+    {
+        Dictionary<string, int> sayac = new Dictionary<string, int>();
+
+        //rezervasyon plakaları tek tek sayılıyor
+        for (int i = 0; i < rezervasyonPlaka.Count; i++)
+        {
+            string p = rezervasyonPlaka[i];
+            
+            //plaka daha önce eklenmediyse başlangıç değeri 0 oluyor
+            if (!sayac.ContainsKey(p))
+            {
+                sayac[p] = 0;
+            }
+            sayac[p]++;
+        }
+
+        //en çok kiralananı bulmak için
+        string enCok = "";
+        int max = 0;
+
+        foreach (var item in sayac)
+        {
+            if (item.Value > max)
+            {
+                max = item.Value;
+                enCok = item.Key;
+            }
+        }
+
+        if (max == 0)
+        {
+            Console.WriteLine("Henüz rezervasyon yok!!");
+        }
+        else
+        {
+            Console.WriteLine($"En çok kiralanan araç: {enCok}"); //En çok kiralanan aracın plakası yazdırılır
+        }
+    }
+    
 }
