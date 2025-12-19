@@ -22,23 +22,75 @@ class Program
     {
         Console.WriteLine("Araç Kiralama Sistemine Hoş Geldiniz!");
         
+        // ===== ARAÇ + SABİT REZERVASYON 1 =====
         plakaList.Add("35ABC123");
         markaList.Add("BMW");
         modelList.Add("M5");
         gunlukFiyatList.Add(3500);
         aracTipList.Add("Sedan");
+        
+        
+        rezervasyonPlaka.Add("35ABC123");
+        musteriAd.Add("Elif");
+        baslangicTarih.Add(new DateTime(2025, 7, 4));
+        bitisTarih.Add(new DateTime(2025, 7, 12));
+        ucretListe.Add(
+            RezervasyonUcreti(
+                "35ABC123",
+                new DateTime(2025, 7, 4),
+                new DateTime(2025, 7, 12)
+            )
+        );
 
+        // ===== ARAÇ + SABİT REZERVASYON 2 =====
         plakaList.Add("34XYZ789");
         markaList.Add("Mercedes");
         modelList.Add("C200");
         gunlukFiyatList.Add(2800);
         aracTipList.Add("Sedan");
+        
+        
+        rezervasyonPlaka.Add("34XYZ789");
+        musteriAd.Add("Ceylin");
+        baslangicTarih.Add(new DateTime(2025, 7, 10));
+        bitisTarih.Add(new DateTime(2025, 7, 15));
+        ucretListe.Add(
+            RezervasyonUcreti(
+                "34XYZ789",
+                new DateTime(2025, 7, 10),
+                new DateTime(2025, 7, 15)
+            )
+        );
 
+        // ===== ARAÇ + SABİT REZERVASYON 3 =====
         plakaList.Add("06MOTO45");
         markaList.Add("Honda");
         modelList.Add("CBR600");
         gunlukFiyatList.Add(800);
         aracTipList.Add("Motor");
+        
+        
+        rezervasyonPlaka.Add("06MOTO45");
+        musteriAd.Add("Zeynep");
+        baslangicTarih.Add(new DateTime(2025, 7, 5));
+        bitisTarih.Add(new DateTime(2025, 7, 8));
+        ucretListe.Add(
+            RezervasyonUcreti(
+                "06MOTO45",
+                new DateTime(2025, 7, 5),
+                new DateTime(2025, 7, 8)
+            )
+        );
+        
+        for (int i = 0; i < plakaList.Count; i++)
+        {
+            Console.WriteLine("Plaka: " + plakaList[i]);
+            Console.WriteLine("Marka: " + markaList[i]);
+            Console.WriteLine("Model: " + modelList[i]);
+            Console.WriteLine("Günlük Fiyat: " + gunlukFiyatList[i] + " TL");
+            Console.WriteLine("Araç Tipi: " + aracTipList[i]);
+            Console.WriteLine("----------------------");
+        }
         
         int secim;
 
@@ -53,45 +105,25 @@ class Program
             Console.WriteLine("6- Belirli Müşterinin Rezervasyonunu Göster");
             Console.WriteLine("7- En Çok Kiralanan Aracı Göster");
             Console.WriteLine("8- Toplam Geliri Göster");
-            Console.WriteLine("9- Çıkış");
+            Console.WriteLine("0- Çıkış");
             Console.Write("Seçim: ");
             
-            secim = int.Parse(Console.ReadLine());
-
+            if (!int.TryParse(Console.ReadLine(), out secim))
+            {
+                Console.WriteLine("Lütfen geçerli bir sayı giriniz!");
+                continue;
+            }
+            
             switch (secim)
             {
-                case 1:
-                    AraclariListele();
-                    break;
-
-                case 2:
-                    // Müsait Araçları Göster
-                    break;
-
-                case 3:
-                    // Araç Ekle
-                    break;
-
-                case 4:
-                    // Rezervasyon Yap
-                    break;
-
-                case 5:
-                    // Rezervasyon İptal Et
-                    break;
-
-                case 6:
-                    // Müşteri Rezervasyonları
-                    break;
-
-                case 7:
-                    // En çok kiralanan araç
-                    break;
-
-                case 8:
-                    // Toplam gelir
-                    break;
-
+                case 1: AraclariListele(); break;
+                case 2: musaitAraclariGoster(); break;
+                case 3: AracEkle(); break;
+                case 4: RezervasyonEkle(); break;
+                case 5: RezervasyonIptal(); break;
+                case 6: MusteriRezervasyonlari(); break;
+                case 7: EnCokKiralananArac(); break;
+                case 8: ToplamGeliriGoster(); break;
                 case 0:
                     Console.WriteLine("Çıkış yapılıyor...");
                     return; // programdan çıkış
@@ -113,12 +145,12 @@ class Program
 
         for (int i = 0; i < plakaList.Count; i++)
         {
-            Console.WriteLine(plakaList[i]);
-            Console.WriteLine(markaList[i]);
-            Console.WriteLine(modelList[i]);
-            Console.WriteLine(gunlukFiyatList[i]);
-            Console.WriteLine(aracTipList[i]);
-            Console.WriteLine("-------------------------");
+            Console.WriteLine($"Plaka: {plakaList[i]}");
+            Console.WriteLine($"Marka: {markaList[i]}");
+            Console.WriteLine($"Model: {modelList[i]}");
+            Console.WriteLine($"Günlük Fiyat: {gunlukFiyatList[i]} TL");
+            Console.WriteLine($"Araç Tipi: {aracTipList[i]}");
+            Console.WriteLine("-------------------");
         }
     }
 
@@ -184,6 +216,12 @@ class Program
         Console.Write("Plaka: ");
         string plaka = Console.ReadLine();
         
+        if (plakaList.Contains(plaka))
+        {
+            Console.WriteLine("Bu plaka zaten mevcut!");
+            return;
+        }
+        
         Console.Write("Marka: ");
         string marka = Console.ReadLine();
         
@@ -201,7 +239,7 @@ class Program
         modelList.Add(model);
         gunlukFiyatList.Add(fiyat);
         aracTipList.Add(tip);
-
+        
         Console.WriteLine("Araç listeye başarıyla eklendi :)");
     }
 
@@ -222,6 +260,12 @@ class Program
         
         Console.Write("Plaka: ");
         string plaka = Console.ReadLine();
+        
+        if (!plakaList.Contains(plaka))
+        {
+            Console.WriteLine("Plaka bulunamadı!");
+            return;
+        }
         
         Console.Write("Başlangıç Tarihi (yyyy-aa-gg): ");
         DateTime baslangic = DateTime.Parse(Console.ReadLine());
@@ -321,5 +365,16 @@ class Program
             Console.WriteLine($"En çok kiralanan araç: {enCok}"); //En çok kiralanan aracın plakası yazdırılır
         }
     }
-    
+
+    static void ToplamGeliriGoster()
+    {
+        double toplam = 0;
+
+        for (int i = 0; i < ucretListe.Count; i++)
+        {
+            toplam += ucretListe[i];
+        }
+
+        Console.WriteLine($"Toplam Gelir: {toplam} TL");
+    }
 }
